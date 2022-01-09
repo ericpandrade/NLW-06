@@ -4,7 +4,7 @@ import { Router } from "./Routes";
 
 import "./services/firebase";
 
-import "./styles/global.scss";
+import "./global.scss";
 
 ReactDOM.render(
   <React.StrictMode>
