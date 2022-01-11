@@ -1,0 +1,27 @@
+import React from "react";
+
+import "./style.scss";
+
+type QuestionProps = {
+  content: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  children?: React.ReactNode;
+};
+
+export function Questions({ content, author, children }: QuestionProps) {
+  return (
+    <div className="question">
+      <p>{content}</p>
+      <footer>
+        <div className="user-info">
+          <img src={author.avatar} alt={author.name} />
+          <span>{author.name}</span>
+        </div>
+        <div className="like-button">{children}</div>
+      </footer>
+    </div>
+  );
+}
