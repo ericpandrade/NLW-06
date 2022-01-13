@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import logoImg from "../../assets/images/logo.svg";
 import deleteImg from "../../assets/images/delete.svg";
+import checkImg from "../../assets/images/check.svg";
+import asnwerImg from "../../assets/images/answer.svg";
 
 import { RoomCode } from "../../components/RoomCode";
 
@@ -33,6 +35,18 @@ export function AdminRoom() {
     }
   }
 
+  async function handleCheckQuestionAsAnswered(questionId: string) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isAnswered: true,
+    });
+  }
+
+  async function handleHighlightQuestion(questionId: string) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isHighlighted: true,
+    });
+  }
+
   return (
     <div id="page-room">
       <header>
@@ -60,13 +74,39 @@ export function AdminRoom() {
                 key={questions.id}
                 content={questions.content}
                 author={questions.author}
+                isAnswered={questions.isAnswered}
+                isHighlighted={questions.isHighlighted}
               >
-                <button
-                  type="button"
-                  onClick={() => handleDeleteQuestion(questions.id)}
-                >
-                  <img src={deleteImg} alt="Remover pergunta" />
-                </button>
+                <div>
+                  {!questions.isAnswered && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleCheckQuestionAsAnswered(questions.id)
+                        }
+                      >
+                        <img
+                          src={checkImg}
+                          alt="Marcar pergunta como respondida"
+                        />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleHighlightQuestion(questions.id)}
+                      >
+                        <img src={asnwerImg} alt="Dar destaque a pergunta" />
+                      </button>
+                    </>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteQuestion(questions.id)}
+                  >
+                    <img src={deleteImg} alt="Remover pergunta" />
+                  </button>
+                </div>
               </Questions>
             );
           })}
